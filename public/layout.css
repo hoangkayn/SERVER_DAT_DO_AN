@@ -1,0 +1,7 @@
+body{font-size: 12px;background-color:aliceblue;}
+#wrapper{width: 100%;}
+#left{width: 20%;float: left;}
+#left #logo{width: 50%;height: 100%;}
+#content{width: 80%;background-color: antiquewhite;float: right;}
+#menu a:link, #menu a:visited{text-decoration: none;display: block;padding: 10px;background-color: black;color: white;}
+#menu a:hover{background-color: gold;color: black;}

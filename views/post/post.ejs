@@ -1,0 +1,34 @@
+<script>
+    var url = "http://localhost:3000"
+    $(document).ready(function(){
+        $.post(url + "/post",function(data){
+            $("#delete_Post").html("")
+            data.post_List.forEach(function(post){
+                
+                $("#delete_Post").append(`
+                <li class = "post" idPost="`+post._id+`">`+post.TieuDe+`</li>`)
+            })
+        })
+    })
+    $(document).on("click",".post",function(){
+        var chon = confirm("ban co muon xoa bai dang nay khong")
+        if(chon){
+            
+            $.post(url+"/post/delete",{ID_Post:$(this).attr("idPost")},function(data2){
+                if(data2.result==1){
+                   
+                    $.post(url + "/post",function(data){
+            $("#delete_Post").html("")
+            data.post_List.forEach(function(post){
+                
+                $("#delete_Post").append(`
+                <li class = "post" idPost="`+post._id+`">`+post.TieuDe+`</li>`)
+            })
+        })
+                }
+            })
+        }
+    })
+    
+</script>
+<ul id="delete_Post"></ul>

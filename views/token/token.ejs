@@ -1,0 +1,35 @@
+<script>
+    $(document).ready(function(){
+        var url ="http://localhost:3000"
+        $.post(url + "/user",function(data){
+            $("#danhSachUser").html("")
+            data.List_User.forEach(function(user){
+                
+                $("#danhSachUser").append(`
+                <li class = "user" idUser="`+user._id+`">`+user.Username+`</li>`)
+            })
+        })
+    })
+    $(document).on("click",".user",function(){
+        var chon = confirm("ban co muon xoa tai khoan nay khong")
+        if(chon){
+            $.post(url+"/user/delete",{ID:$(this).attr("idUser")},function(data2){
+                if(data2.result==1){
+                    $.post(url + "/user",function(data){
+            $("#danhSachUser").html("")
+            data.List_User.forEach(function(user){
+                
+                $("#danhSachUser").append(`
+                <li class = "user" idUser="`+user._id+`">`+user.Username+`</li>`)
+            })
+        })
+                }
+            })
+        }
+    })
+    
+</script>
+
+<ul id="danhSachUser">
+   
+</ul>

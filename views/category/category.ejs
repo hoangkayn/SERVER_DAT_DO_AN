@@ -1,0 +1,150 @@
+<script>
+    $(document).ready(function(){
+
+        $.post(url+"/category",function(data2){
+            
+      data2.List.forEach(function(cate){
+$("#list_Cate").append(`
+<li class="cate" idcate="`+cate._id+`" srcHinh="`+cate.Image+`">`+cate.Name+`</li>`)
+      })
+    })
+    $("#hinhsp").change(function(){
+        var data = new FormData();
+            jQuery.each(jQuery('#hinhsp')[0].files, function(i, file) {
+                console.log('hinhdaidien');
+                data.append('hinhdaidien', file);
+            });
+            jQuery.ajax({
+                url: url + "/uploadFile",
+                data: data,
+                cache: false,
+                contentType: false,
+                processData: false,
+                method: 'POST',
+                type: 'POST', // For jQuery < 1.9
+                success: function(data){
+                    if(data.kq==1){
+                        console.log(data);
+                       // console.log($("#file_ImageCate"))
+                      $("#img_newCate").attr("src",url+"/upload/"+data.urlFile.filename)
+                      $("#file_ImageCate").val(data.urlFile.filename)
+                    }else{
+                        console.log("Upload fail!");
+                    }
+                }
+            });
+    })
+    
+    $("#hinhsp_Upd").change(function(){
+        var data = new FormData();
+            jQuery.each(jQuery('#hinhsp_Upd')[0].files, function(i, file) {
+                console.log('hinhdaidien');
+                data.append('hinhdaidien', file);
+            });
+            jQuery.ajax({
+                url: url + "/uploadFile",
+                data: data,
+                cache: false,
+                contentType: false,
+                processData: false,
+                method: 'POST',
+                type: 'POST', // For jQuery < 1.9
+                success: function(data){
+                    if(data.kq==1){
+                        console.log(data);
+                        $("#file_ImageCate_Upd").val(data.urlFile.filename)
+                        $("#img_UpdCate").attr("src",url+"/upload/"+data.urlFile.filename)
+                    }else{
+                        console.log("Upload fail!");
+                    }
+                }
+            });
+    })
+    $("#btn_Add_New").click(function(){
+$.post(url+"/category/addNew",{
+    Name: $("#cateName").val(),
+    Image: $("#file_ImageCate").val()
+},function(data){
+if(data.result == 1){
+    $("#list_Cate").html("")
+    $.post(url+"/category",function(data2){
+      data2.List.forEach(function(cate){
+$("#list_Cate").append(`
+<li class="cate" idcate="`+cate._id+`" srcHinh="`+cate.Image+`">`+cate.Name+`</li>`)
+      })
+    })
+}
+})
+    })
+    $(document).on("click",".cate",function(){
+        var idCate = $(this).attr("idcate");
+      
+    $("#img_UpdCate").attr("src",url+"/upload/"+$(this).attr("srcHinh"))
+    $("#cateName_Upd").val($(this).html())
+   //$("#file_ImageCate").val($(this).attr("srcHinh"))
+    $("#idCate").val(idCate)
+})
+$("#btn_Upd_Cate").click(function(){
+
+    $.post(url+"/category/update",{
+        CateID:$("#idCate").val(),
+        Name:$("#cateName_Upd").val(),
+        Image:$("#file_ImageCate_Upd").val()
+        
+    },function(data3){
+if(data3.result==1){
+   
+    $.post(url+"/category",function(data2){
+        $("#list_Cate").html("");
+      data2.List.forEach(function(cate){
+$("#list_Cate").append(`
+<li class="cate" idcate="`+cate._id+`" srcHinh="`+cate.Image+`">`+cate.Name+`</li>`)
+      })
+    })
+}else{
+    console.log("bad")
+}
+    })
+})
+$("#delete_Cate").click(function(){
+    
+    $.post(url+"/category/delete",{
+        CateID:$("#idCate").val()
+    },function(data){
+       
+        if(data.result==1){
+         $("#cateName_Upd").val("")
+        // $("#img_UpdCate").attr("src","")
+            $.post(url+"/category",function(data2){
+                $("#list_Cate").html("")
+      data2.List.forEach(function(cate){
+$("#list_Cate").append(`
+<li class="cate" idcate="`+cate._id+`" srcHinh="`+cate.Image+`">`+cate.Name+`</li>`)
+      })
+    })
+        }
+    })
+})
+})
+
+
+    </script>
+<div id="form_Addnew_Cate">
+    <input type="file" id ="hinhsp"/> <br/>
+    <input type="text" id ="cateName" placeholder="Cate Name"> <br/>
+    <input type="button" id ="btn_Add_New" value="New Cate"> <br/>
+    <input type="hidden" id ="file_ImageCate"> <br/>
+    <img  id ="img_newCate"  width="100px"/>
+</div>
+
+<ul id = "list_Cate"></ul>
+
+<div id ="Upd_Cate">
+    <input type="file" id ="hinhsp_Upd"/> <br/>
+    <input type="text" id ="cateName_Upd" placeholder="Cate Name"> <br/>
+    <input type="button" id ="btn_Upd_Cate" value="Update"/> 
+    <input type="button" id="delete_Cate" value="Delete"/> <br/>
+    <input type="hidden" id ="file_ImageCate_Upd"> <br/>
+    <img  id ="img_UpdCate"  width="100px"/>
+    <input type="hidden" id ="idCate">
+</div>

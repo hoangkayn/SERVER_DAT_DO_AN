@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>APP DAT DO AN</title>
+    <link rel="stylesheet" type ="text/css" href="./layout.css">
+    <script src ="https://code.jquery.com/jquery-3.6.1.min.js"></script>
+   <script src = "./js/ajax.js"></script>
+</head>
+<body>
+    <div id = "wrapper">
+        <div id = "left">
+           <img  id = "logo"src="./images/logo.jpg" alt="">
+            <div id ="menu">
+                <a href="./city">thanh pho</a>
+                <a href="./category">nhom sp</a>
+                <a href="./token">token</a>
+                <a href="./post">post</a>
+            </div>
+        </div>
+        <div id = "content">
+     
+            <%- include(content)%>
+        </div>
+    </div>
+</body>
+</html>

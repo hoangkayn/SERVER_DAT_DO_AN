@@ -1,0 +1,87 @@
+<script>
+    $(document).ready(function(){
+      
+        $.post(url +"/city",function(data2){
+           if(data2.result==1){
+           $("#city_List").html("")
+           data2.List.forEach(function(city){
+$("#city_List").append(`
+<li class="city" cityID="` + city._id  +  `">` + city.Name + `</li>
+`)
+           })
+           }
+        })
+    })
+    $(document).on("click",".city",function(){
+
+        var Ten = $(this).html()
+        $("#cityName_Upd").val(Ten)
+        var city_Id = $(this).attr("cityid")
+        $("#hid_IdCity").val(city_Id)
+   
+        $("#btn_UpdateCity").click(function(){
+            $.post(url + "/city/update", {
+            CityID:$("#hid_IdCity").val(),
+            Name:$("#cityName_Upd").val()
+        }, function(data){
+           
+            if(data.kq==1){
+                $.post(url +"/city",function(data2){
+           if(data2.result==1){
+           $("#city_List").html("")
+           data2.List.forEach(function(city){
+$("#city_List").append(`
+<li class="city" cityID="` + city._id  +  `">` + city.Name + `</li>
+`)
+           })
+           }
+        }) 
+                        
+            
+                
+            }
+        });
+    });
+    $("#bnt_DeleteCity").click(function(){
+      var chon = confirm("ban co muon xoa thanh pho nay khong?")
+      if(chon){
+        $.post(url + "/city/delete", {
+            CityID:$("#hid_IdCity").val(),
+            
+        }, function(data){
+           
+            if(data.kq==1){
+                $("#cityName_Upd").val()
+                $.post(url +"/city",function(data2){
+           if(data2.result==1){
+           $("#city_List").html("")
+           data2.List.forEach(function(city){
+$("#city_List").append(`
+<li class="city" cityID="` + city._id  +  `">` + city.Name + `</li>
+`)
+           })
+           }
+        }) 
+                        
+            
+                
+            }
+        });
+      }
+})
+})
+
+</script>
+
+
+<div id="city_formAddNew">
+    <input type="text" id="cityName" placeholder="Ten thanh pho" />
+    <input type="button" id="btn_AddNewCity" value="Add new">
+</div>
+<ul id="city_List"></ul>
+<div id = "city_formUpdate">
+    <input type="hidden" id="hid_IdCity" value="">
+    <input type="text" id ="cityName_Upd" placeholder="ten thanh pho"/>
+    <input type="button" id ="btn_UpdateCity" value="update"/>
+    <input type="button" id ="bnt_DeleteCity" value="delete"/>
+</div>
